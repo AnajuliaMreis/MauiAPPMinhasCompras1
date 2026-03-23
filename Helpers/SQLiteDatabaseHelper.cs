@@ -33,7 +33,7 @@ namespace MauiAPPMinhasCompras.Helpers
 
         public Task<int> Delete(int id)
         {
-            return _conn.Table<Produto>().DeleteAsync(i => i.Id == id);
+            return _conn.ExecuteAsync("DELETE FROM Produto WHERE Id = ?", id);
         }
 
         public Task<List<Produto>> GetAll()
