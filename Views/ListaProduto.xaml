@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiAPPMinhasCompras.Views.ListaProduto"
-             Title="Minhas Compras">
-
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MauiAPPMinhasCompras.Views.ListaProduto" Title="Minhas Compras">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Somar" Clicked="ToolbarItem_Clicked_1"/>
         <ToolbarItem Text="Adicionar" Clicked="ToolbarItem_Clicked" />
     </ContentPage.ToolbarItems>
-
     <VerticalStackLayout>
-        <Entry x:Name="txt_search" 
-                   Placeholder="Busca de Produtos"
-                   TextChanged="txt_search_TextChanged"/>
-            <CollectionView x:Name="lst_produtos">
+        <Entry x:Name="txt_search" Placeholder="Busca de Produtos" TextChanged="txt_search_TextChanged"/>
+        <CollectionView x:Name="lst_produtos" SelectionMode="Single" SelectionChanged="lst_produtos_SelectionChanged">
             <CollectionView.Header>
                 <Grid ColumnDefinitions="*,*,*,*,*">
                     <Label Grid.Column="0" Text="ID"/>
@@ -23,16 +16,20 @@
                     <Label Grid.Column="4" Text="Total"/>
                 </Grid>
             </CollectionView.Header>
-
             <CollectionView.ItemTemplate>
                 <DataTemplate>
+
                     <Grid ColumnDefinitions="*,*,*,*,*">
+                        
                         <Label Grid.Column="0" Text="{Binding Id}" />
                         <Label Grid.Column="1" Text="{Binding Descricao}" />
                         <Label Grid.Column="2" Text="{Binding Preco}" />
                         <Label Grid.Column="3" Text="{Binding Quantidade}" />
                         <Label Grid.Column="4" Text="{Binding Total}" />
+
+                 
                     </Grid>
+              
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
