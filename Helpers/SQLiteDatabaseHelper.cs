@@ -15,6 +15,8 @@ namespace MauiAPPMinhasCompras.Helpers
         {
             _conn = new SQLiteAsyncConnection(path);
             _conn.CreateTableAsync<Produto>().Wait();
+            // adiciona coluna Categoria se não existir
+            _conn.ExecuteAsync("ALTER TABLE Produto ADD COLUMN Categoria TEXT").ConfigureAwait(false);
         }
 
         public Task<int> Insert(Produto p)
@@ -46,6 +48,12 @@ namespace MauiAPPMinhasCompras.Helpers
             string sql = "SELECT * FROM Produto WHERE descricao LIKE '%" + q + "%'";
 
             return _conn.QueryAsync<Produto>(sql);
+        }
+
+        public Task<List<Produto>> GetByCategoria(string categoria)
+        {
+            string sql = "SELECT * FROM Produto WHERE Categoria = ?";
+            return _conn.QueryAsync<Produto>(sql, categoria);
         }
     }
 }
