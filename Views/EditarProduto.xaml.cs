@@ -20,7 +20,8 @@ public partial class EditarProduto : ContentPage
                 Id = produto_anexado.Id,
                 Descricao = produto_anexado.Descricao,
                 Quantidade = produto_anexado.Quantidade,
-                Preco = produto_anexado.Preco
+                Preco = produto_anexado.Preco,
+                Categoria = produto_anexado.Categoria
             };
 
             await App.Db.Update(p);
