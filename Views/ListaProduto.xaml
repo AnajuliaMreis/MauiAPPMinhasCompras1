@@ -3,35 +3,55 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Somar" Clicked="ToolbarItem_Clicked_1"/>
         <ToolbarItem Text="Adicionar" Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="Relatório" Clicked="ToolbarItem_Clicked_2" />
+        
     </ContentPage.ToolbarItems>
-    <VerticalStackLayout>
-        <Entry x:Name="txt_search" Placeholder="Busca de Produtos" TextChanged="txt_search_TextChanged"/>
-        <CollectionView x:Name="lst_produtos" SelectionMode="Single" SelectionChanged="lst_produtos_SelectionChanged">
+
+    <StackLayout>
+        <Picker x:Name="pickerCategoria" Title="Filtrar por Categoria" SelectedIndexChanged="pickerCategoria_SelectedIndexChanged">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Todos</x:String>
+                    <x:String>Alimentos</x:String>
+                    <x:String>Higiene</x:String>
+                    <x:String>Limpeza</x:String>
+                    <x:String>Bebidas</x:String>
+                    <x:String>Outros</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+
+        <Entry x:Name="txt_search"  Placeholder="Busca de Produtos" TextChanged="txt_search_TextChanged"/>
+        <Frame Padding="0" Margin="10" VerticalOptions="FillAndExpand">
+
+            <CollectionView x:Name="lst_produtos" SelectionMode="Single" SelectionChanged="lst_produtos_SelectionChanged">
             <CollectionView.Header>
-                <Grid ColumnDefinitions="*,*,*,*,*">
-                    <Label Grid.Column="0" Text="ID"/>
-                    <Label Grid.Column="1" Text="Descrição"/>
-                    <Label Grid.Column="2" Text="Preço"/>
-                    <Label Grid.Column="3" Text="Qnt"/>
-                    <Label Grid.Column="4" Text="Total"/>
-                </Grid>
+                <Grid ColumnDefinitions="30,200,80,50,90,120" BackgroundColor="{StaticResource Gray200}">
+                            <Label Grid.Column="0" Text="ID" Padding="5" FontAttributes="Bold"/>
+                        <Label Grid.Column="1" Text="Descrição" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="Preço" FontAttributes="Bold"/>
+                            <Label Grid.Column="3" Text="Qnt" FontAttributes="Bold"/>
+                            <Label Grid.Column="4" Text="Total" FontAttributes="Bold"/>
+                        <Label Grid.Column="5" Text="Categoria" FontAttributes="Bold"/>
+
+                    </Grid>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-
-                    <Grid ColumnDefinitions="*,*,*,*,*">
-                        
-                        <Label Grid.Column="0" Text="{Binding Id}" />
-                        <Label Grid.Column="1" Text="{Binding Descricao}" />
-                        <Label Grid.Column="2" Text="{Binding Preco}" />
-                        <Label Grid.Column="3" Text="{Binding Quantidade}" />
-                        <Label Grid.Column="4" Text="{Binding Total}" />
-
-                 
+                        <Grid ColumnDefinitions="30,200,80,50,90,120">
+                            <Label Grid.Column="0" Text="{Binding Id}" Padding="5" TextColor="Black"/> 
+                            <Label Grid.Column="1" Text="{Binding Descricao}" />
+                            <Label Grid.Column="2" Text="{Binding Preco, StringFormat='{}{0:c}'}" /> 
+                            <Label Grid.Column="3" Text="{Binding Quantidade}" /> 
+                            <Label Grid.Column="4" Text="{Binding Total, StringFormat='{}{0:c}'}" />
+                            <Label Grid.Column="5" Text="{Binding Categoria}"/>
                     </Grid>
               
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+         
+        </Frame>
+    </StackLayout>
 </ContentPage>
