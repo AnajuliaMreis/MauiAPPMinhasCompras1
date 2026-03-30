@@ -1,4 +1,5 @@
 using MauiAPPMinhasCompras.Models;
+using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
 using System.Collections.ObjectModel;
 
 namespace MauiAPPMinhasCompras.Views;
@@ -9,7 +10,7 @@ public partial class ListaProduto : ContentPage
     public ListaProduto()
     {
         InitializeComponent();
-      
+
         lst_produtos.ItemsSource = lista;
     }
 
@@ -46,17 +47,19 @@ public partial class ListaProduto : ContentPage
         try
         {
             string q = e.NewTextValue;
-
+         
             lista.Clear();
 
             List<Produto> tmp = await App.Db.Search(q);
 
             tmp.ForEach(i => lista.Add(i));
-        } catch
-        {
-
         }
-     }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Ops", ex.Message, "OK");
+        }
+        
+    }
 
     private void ToolbarItem_Clicked_1(object sender, EventArgs e)
     {
@@ -69,7 +72,7 @@ public partial class ListaProduto : ContentPage
 
 
 
-   
+
 
     private async void lst_produtos_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -95,11 +98,11 @@ public partial class ListaProduto : ContentPage
         else if (action == "Excluir")
         {
 
-           bool confirm = await DisplayAlertAsync(
-                "Tem Certeza?",
-                $"Remover {p.Descricao}?",
-                "Sim",
-                "Não");
+            bool confirm = await DisplayAlertAsync(
+                 "Tem Certeza?",
+                 $"Remover {p.Descricao}?",
+                 "Sim",
+                 "Não");
 
             if (confirm)
             {
@@ -108,13 +111,37 @@ public partial class ListaProduto : ContentPage
                 await DisplayAlertAsync("DEBUG", $"Quantidade: {all.Count}", "OK");
                 lista.Remove(p);
             }
-     
+
         }
 
         ((CollectionView)sender).SelectedItem = null;
     }
 
-  
+ 
 
+    private async void pickerCategoria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string categoria = pickerCategoria.SelectedItem?.ToString() ?? "Todos";
+        await CarregarProdutos(categoria);
+    }
 
+    private async Task CarregarProdutos(string categoria)
+    {
+        lista.Clear();
+
+        List<Produto> produtos;
+        if (categoria == "Todos")
+            produtos = await App.Db.GetAll();
+        else
+            produtos = await App.Db.GetByCategoria(categoria);
+
+        produtos.ForEach(p => lista.Add(p));
+        lst_produtos.ItemsSource = lista;
+
+    }
+
+    private async void ToolbarItem_Clicked_2(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new Views.RelatorioCategoria());
+    }
 }
